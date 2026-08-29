@@ -11,12 +11,6 @@
     "healthcheckTimeout": 60,
     "restartPolicyType": "on_failure",
     "restartPolicyMaxRetries": 10,
-    "startCommand": "sh -c 'mkdir -p /data/langfuse && minio server --address :9000 --console-address :9001 /data'",
-    "volumeMounts": [
-      {
-        "name": "minio-data",
-        "mountPath": "/data"
-      }
-    ]
+    "startCommand": "sh -c 'mkdir -p /data/langfuse && minio server --address :9000 --console-address :9001 /data'"
   }
 }
