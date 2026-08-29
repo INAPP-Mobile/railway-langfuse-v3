@@ -11,7 +11,7 @@
     "restartPolicyMaxRetries": 10,
     "volumeMounts": [
       {
-        "name": "minio-volume",
+        "name": "minio-data",
         "mountPath": "/data"
       }
     ]
