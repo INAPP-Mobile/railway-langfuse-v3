@@ -1,8 +1,4 @@
 <?xml version="1.0"?>
-<!--
-  ClickHouse single-node config with built-in Keeper
-  Enables ON CLUSTER syntax for Langfuse migrations
--->
 <clickhouse>
     <logger>
         <level>trace</level>
