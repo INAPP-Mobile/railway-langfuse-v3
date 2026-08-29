@@ -1,14 +1,22 @@
-FROM docker.io/minio/minio:RELEASE.2025-07-17T12-07-51Z
+FROM docker.io/minio/minio
 
 # MinIO for Railway
-# No volume mounts - uses container fs (ephemeral)
-# For production, attach external S3 via env vars
+# The volume at /data is mounted as root, so we need root to create subdirs
+USER root
+RUN mkdir -p /data && chmod 777 /data
 
-RUN mkdir -p /minio-data/langfuse
+# Create entrypoint script that drops privileges properly
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'set -e' >> /entrypoint.sh && \
+    echo 'mkdir -p /data/langfuse' >> /entrypoint.sh && \
+    echo 'chmod 777 /data' >> /entrypoint.sh && \
+    echo 'chown -R minio:minio /data' >> /entrypoint.sh && \
+    echo 'exec su -s /bin/sh minio -c "minio server --address :9000 --console-address :9001 /data"' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
 
-HEALTHCHECK --interval=1s --timeout=5s --retries=5 --start-period=1s \
+HEALTHCHECK --interval=5s --timeout=5s --retries=10 --start-period=30s \
   CMD mc ready local || exit 1
 
 EXPOSE 9000 9001
 
-CMD ["minio", "server", "--address", ":9000", "--console-address", ":9001", "/minio-data"]
+ENTRYPOINT ["/entrypoint.sh"]

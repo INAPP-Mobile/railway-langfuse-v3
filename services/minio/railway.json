@@ -1,14 +1,14 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
-    "image": "docker.io/minio/minio"
+    "builder": "dockerfile",
+    "dockerfilePath": "Dockerfile"
   },
   "deploy": {
     "numReplicas": 1,
     "restartPolicyType": "on_failure",
     "restartPolicyMaxRetries": 10,
     "healthcheckPath": "/minio/health/live",
-    "healthcheckTimeout": 60,
-    "startCommand": "sh -c 'mkdir -p /data/langfuse && minio server --address :9000 --console-address :9001 /data'"
+    "healthcheckTimeout": 60
   }
 }
