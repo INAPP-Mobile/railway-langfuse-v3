@@ -1,7 +1,4 @@
-FROM cgr.dev/chainguard/minio
-
-ENV MINIO_ROOT_USER=minio
-# MINIO_ROOT_PASSWORD is injected by Railway at runtime via ${{secret(32)}}
+FROM docker.io/minio/minio:latest
 
 # Create the langfuse bucket before starting
 ENTRYPOINT ["sh"]
