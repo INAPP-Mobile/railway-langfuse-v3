@@ -1,18 +1,15 @@
 FROM docker.io/minio/minio:RELEASE.2025-07-17T12-07-51Z
 
-# MinIO for Railway
-# Uses container filesystem (no volume) to avoid overlayfs rename issues
-# Data is ephemeral - for production, attach external S3
+# MinIO for Railway - use local container fs to avoid overlayfs issues
+# For production, attach external S3 via env vars
 
 USER root
-RUN mkdir -p /minio-data/langfuse && chown -R 1000:1000 /minio-data
+RUN mkdir -p /minio-local/langfuse && chown -R 1000:1000 /minio-local
 USER 1000
-
-ENV MINIO_VOLUMES="/minio-data"
-ENV MINIO_STORAGE_CLASS_STANDARD="EC:0"
-ENV MINIO_BROWSER="on"
 
 HEALTHCHECK --interval=1s --timeout=5s --retries=5 --start-period=1s \
   CMD mc ready local || exit 1
 
 EXPOSE 9000 9001
+
+CMD ["minio", "server", "--address", ":9000", "--console-address", ":9001", "/minio-local"]
