@@ -9,6 +9,12 @@
     "restartPolicyMaxRetries": 10,
     "healthcheckPath": "/ping",
     "healthcheckTimeout": 120,
+    "volumes": [
+      {
+        "mountPath": "/var/lib/clickhouse",
+        "name": "clickhouse-data"
+      }
+    ],
     "startCommand": "clickhouse-server --config-file=/etc/clickhouse-server/config.xml"
   }
 }
