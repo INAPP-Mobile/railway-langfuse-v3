@@ -1,0 +1,14 @@
+{
+  "REDIS_AUTH": {
+    "value": "${{secret(32)}}",
+    "description": "Redis password. Auto-generated at deploy time. Referenced by Langfuse as ${{redis.REDIS_AUTH}}."
+  },
+  "REDIS_PORT": {
+    "value": "6379",
+    "description": "Port Redis listens on inside the container. Must stay 6379 — Langfuse references this port via private networking."
+  },
+  "REDIS_HOST": {
+    "value": "${{RAILWAY_PRIVATE_DOMAIN}}",
+    "description": "Redis hostname. Referenced by Langfuse as ${{redis.REDIS_HOST}} via private networking."
+  }
+}

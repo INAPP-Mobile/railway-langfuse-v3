@@ -1,0 +1,14 @@
+{
+  "MINIO_ROOT_USER": {
+    "name": "MINIO_ROOT_USER",
+    "defaultValue": "minio",
+    "description": "MinIO root (admin) username. Referenced by Langfuse as ${{minio.MINIO_ROOT_USER}}.",
+    "isOptional": false
+  },
+  "MINIO_ROOT_PASSWORD": {
+    "name": "MINIO_ROOT_PASSWORD",
+    "defaultValue": "${{secret(32)}}",
+    "description": "MinIO root password. Auto-generated at deploy time. Referenced by Langfuse as ${{minio.MINIO_ROOT_PASSWORD}}.",
+    "isOptional": false
+  }
+}

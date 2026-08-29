@@ -1,0 +1,32 @@
+{
+  "POSTGRES_USER": {
+    "name": "POSTGRES_USER",
+    "defaultValue": "postgres",
+    "description": "PostgreSQL superuser username. Referenced by langfuse-web and langfuse-worker as ${{postgres.POSTGRES_USER}}.",
+    "isOptional": false
+  },
+  "POSTGRES_PASSWORD": {
+    "name": "POSTGRES_PASSWORD",
+    "defaultValue": "${{secret(32)}}",
+    "description": "PostgreSQL superuser password. Auto-generated at deploy time. Referenced by Langfuse via ${{postgres.POSTGRES_PASSWORD}}.",
+    "isOptional": false
+  },
+  "POSTGRES_DB": {
+    "name": "POSTGRES_DB",
+    "defaultValue": "postgres",
+    "description": "Default database name. Langfuse uses this database for all its data.",
+    "isOptional": false
+  },
+  "POSTGRES_PORT": {
+    "name": "POSTGRES_PORT",
+    "defaultValue": "5432",
+    "description": "Port PostgreSQL listens on inside the container. Must stay 5432 — Langfuse references this port via private networking.",
+    "isOptional": false
+  },
+  "DATABASE_URL": {
+    "name": "DATABASE_URL",
+    "defaultValue": "postgresql://${{POSTGRES_USER}}:${{POSTGRES_PASSWORD}}@${{RAILWAY_PRIVATE_DOMAIN}}:${{POSTGRES_PORT}}/${{POSTGRES_DB}}",
+    "description": "Self-referencing connection string. Consumed by the postgres service itself and referenced by Langfuse as ${{postgres.DATABASE_URL}}.",
+    "isOptional": false
+  }
+}

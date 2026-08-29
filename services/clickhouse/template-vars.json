@@ -1,0 +1,32 @@
+{
+  "CLICKHOUSE_USER": {
+    "name": "CLICKHOUSE_USER",
+    "defaultValue": "clickhouse",
+    "description": "ClickHouse username. Referenced by Langfuse as ${{clickhouse.CLICKHOUSE_USER}}.",
+    "isOptional": false
+  },
+  "CLICKHOUSE_PASSWORD": {
+    "name": "CLICKHOUSE_PASSWORD",
+    "defaultValue": "${{secret(32)}}",
+    "description": "ClickHouse password. Auto-generated at deploy time. Referenced by Langfuse as ${{clickhouse.CLICKHOUSE_PASSWORD}}.",
+    "isOptional": false
+  },
+  "CLICKHOUSE_DB": {
+    "name": "CLICKHOUSE_DB",
+    "defaultValue": "default",
+    "description": "Default ClickHouse database. Langfuse uses this for analytics data.",
+    "isOptional": false
+  },
+  "CLICKHOUSE_PORT": {
+    "name": "CLICKHOUSE_PORT",
+    "defaultValue": "9000",
+    "description": "ClickHouse native protocol port. Langfuse migration URL uses this port via private networking.",
+    "isOptional": false
+  },
+  "CLICKHOUSE_HTTP_PORT": {
+    "name": "CLICKHOUSE_HTTP_PORT",
+    "defaultValue": "8123",
+    "description": "ClickHouse HTTP port. Langfuse CLICKHOUSE_URL references this port via private networking.",
+    "isOptional": false
+  }
+}

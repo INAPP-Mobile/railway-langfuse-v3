@@ -1,0 +1,10 @@
+{
+  "MINIO_ROOT_USER": {
+    "value": "minio",
+    "description": "MinIO root (admin) username. Referenced by Langfuse as ${{minio.MINIO_ROOT_USER}}."
+  },
+  "MINIO_ROOT_PASSWORD": {
+    "value": "${{secret(32)}}",
+    "description": "MinIO root password. Auto-generated at deploy time. Referenced by Langfuse as ${{minio.MINIO_ROOT_PASSWORD}}."
+  }
+}
