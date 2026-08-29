@@ -1,24 +1,30 @@
-FROM docker.io/minio/minio
+ARG MINIO_VERSION=RELEASE.2025-09-07T16-13-09Z
 
-# MinIO for Railway
-# Railway mounts volumes as root-owned; minio user (uid 1000) can't write.
-# Fix: run entrypoint as root, fix permissions, then drop to minio user.
-USER root
+# Stage 1: Get minio binary from upstream
+FROM minio/minio:${MINIO_VERSION} AS upstream
 
-# Write entrypoint that fixes volume permissions at runtime
-RUN printf '#!/bin/sh\n\
-set -e\n\
-# Fix permissions on the Railway-mounted volume\n\
-chmod 777 /data\n\
-mkdir -p /data/langfuse\n\
-chown -R minio:minio /data\n\
-# Drop to minio user and start server\n\
-exec su -s /bin/sh minio -c "minio server --address :9000 --console-address :9001 /data"\n\
-' > /entrypoint.sh && chmod +x /entrypoint.sh
+# Stage 2: Build runtime image with clean entrypoint
+FROM debian:bookworm-slim
 
-HEALTHCHECK --interval=5s --timeout=5s --retries=10 --start-period=30s \
-  CMD mc ready local || exit 1
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 9000 9001
+# Copy minio binary from upstream (bypasses the upstream entrypoint wrapper)
+COPY --from=upstream /usr/bin/minio /usr/bin/minio
 
-ENTRYPOINT ["/entrypoint.sh"]
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# NOTE: no Dockerfile VOLUME — Railway rejects it; volume is attached via railway.json
+
+HEALTHCHECK --interval=10s --timeout=3s --retries=5 --start-period=15s \
+  CMD curl -f http://127.0.0.1:9000/minio/health/live || exit 1
+
+EXPOSE 9000
+EXPOSE 9001
+
+# CMD (not ENTRYPOINT) so Railway's startCommand replaces it cleanly instead
+# of being appended as arguments to the wrapper script.
+CMD ["/docker-entrypoint.sh"]
