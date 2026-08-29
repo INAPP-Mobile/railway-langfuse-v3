@@ -1,10 +1,11 @@
-FROM docker.io/clickhouse/clickhouse-server:25.12
+FROM bitnami/clickhouse:24.8
 
-# ClickHouse for Railway
-# No volume mounts - uses container fs (ephemeral)
-# For production, attach Railway volume at /var/lib/clickhouse
+# ClickHouse for Railway - bitnami image supports arbitrary UID
+# Data stored in container fs (ephemeral) - for production, attach Railway volume
 
-HEALTHCHECK --interval=5s --timeout=5s --retries=10 --start-period=30s \
+RUN mkdir -p /bitnami/clickhouse/data /bitnami/clickhouse/logs
+
+HEALTHCHECK --interval=5s --timeout=10s --retries=20 --start-period=60s \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
 
 EXPOSE 8123 9000
