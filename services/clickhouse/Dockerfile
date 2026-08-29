@@ -1,11 +1,17 @@
-FROM bitnami/clickhouse:24.8
+FROM clickhouse/clickhouse-server:25.12
 
-# ClickHouse for Railway - bitnami image supports arbitrary UID
-# Data stored in container fs (ephemeral) - for production, attach Railway volume
+# ClickHouse for Railway - no volumes, container fs only
+# Official image already handles clickhouse user/perms correctly
 
-RUN mkdir -p /bitnami/clickhouse/data /bitnami/clickhouse/logs
+USER root
+RUN mkdir -p /var/lib/clickhouse /var/log/clickhouse-server \
+    && chown -R clickhouse:clickhouse /var/lib/clickhouse /var/log/clickhouse-server
 
-HEALTHCHECK --interval=5s --timeout=10s --retries=20 --start-period=60s \
+HEALTHCHECK --interval=10s --timeout=10s --retries=30 --start-period=120s \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
 
 EXPOSE 8123 9000
+
+USER clickhouse
+ENTRYPOINT ["clickhouse-server"]
+CMD ["--config-file=/etc/clickhouse-server/config.xml"]
