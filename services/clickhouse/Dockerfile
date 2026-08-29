@@ -2,7 +2,7 @@ FROM clickhouse/clickhouse-server:25.12
 
 USER root
 
-# Keeper config as an include (stock config stays intact)
+# Keeper config as an include
 COPY keeper.xml /etc/clickhouse-server/config.d/keeper.xml
 RUN chown clickhouse:clickhouse /etc/clickhouse-server/config.d/keeper.xml
 
@@ -15,5 +15,9 @@ HEALTHCHECK --interval=10s --timeout=10s --retries=30 --start-period=120s \
 
 EXPOSE 8123 9000 9181
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Custom entrypoint that logs everything
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["clickhouse-server", "--config-file=/etc/clickhouse-server/config.xml"]
