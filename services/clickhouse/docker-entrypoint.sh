@@ -6,10 +6,12 @@ mkdir -p /var/lib/clickhouse/coordination/log
 mkdir -p /var/lib/clickhouse/coordination/snapshots
 chown -R clickhouse:clickhouse /var/lib/clickhouse/coordination
 
-# Generate users.xml from environment variables so Railway-injected
-# CLICKHOUSE_USER / CLICKHOUSE_PASSWORD are honored at runtime.
-cat > /etc/clickhouse-server/users.xml <<XMLEOF
-<?xml version="1.0"?>
+# Generate users.xml from environment variables
+python3 -c "
+import os, sys
+user = os.environ.get('CLICKHOUSE_USER', 'default')
+pw = os.environ.get('CLICKHOUSE_PASSWORD', '')
+xml = '''<?xml version=\"1.0\"?>
 <clickhouse>
     <profiles>
         <default>
@@ -19,18 +21,22 @@ cat > /etc/clickhouse-server/users.xml <<XMLEOF
         </default>
     </profiles>
     <users>
-        <${CLICKHOUSE_USER}>
-            <password>${CLICKHOUSE_PASSWORD}</password>
+        <''' + user + '''>
+            <password>''' + pw + '''</password>
             <networks>
                 <ip>::/0</ip>
             </networks>
             <profile>default</profile>
             <quota>default</quota>
             <access_management>1</access_management>
-        </${CLICKHOUSE_USER}>
+        </''' + user + '''>
     </users>
 </clickhouse>
-XMLEOF
+'''
+with open('/etc/clickhouse-server/users.xml', 'w') as f:
+    f.write(xml)
+"
+
 chown clickhouse:clickhouse /etc/clickhouse-server/users.xml
 
 # Execute the original entrypoint (handles DB creation from CLICKHOUSE_DB)
