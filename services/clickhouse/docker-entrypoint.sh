@@ -12,4 +12,4 @@ mkdir -p /var/lib/clickhouse/coordination/log /var/lib/clickhouse/coordination/s
 chown -R clickhouse:clickhouse /var/lib/clickhouse/coordination
 
 echo "=== Switching to clickhouse user ==="
-exec gosu clickhouse /entrypoint.sh "$@"
+exec su -s /bin/bash clickhouse -c '/entrypoint.sh "$@"' -- "$@"
