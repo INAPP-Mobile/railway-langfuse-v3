@@ -1,4 +1,4 @@
-FROM docker.io/minio/minio:latest
+FROM quay.io/minio/minio:latest
 
 # Create the langfuse bucket before starting
 ENTRYPOINT ["sh"]
