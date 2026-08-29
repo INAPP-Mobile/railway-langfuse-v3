@@ -18,11 +18,20 @@
             </server>
         </raft_config>
     </keeper_server>
-
     <zookeeper>
         <node>
             <host>localhost</host>
             <port>9181</port>
         </node>
     </zookeeper>
+    <remote_servers>
+        <default>
+            <shard>
+                <replica>
+                    <host>localhost</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </default>
+    </remote_servers>
 </clickhouse>
