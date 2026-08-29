@@ -1,10 +1,7 @@
-FROM docker.io/postgres:17-alpine
+FROM docker.io/pgvector/pgvector:pg17
 
-# pgvector is included in the 17-alpine image via apt, but we ensure it's available
-RUN apk add --no-cache postgresql17-contrib
-
+# POSTGRES_PASSWORD is injected by Railway at runtime via ${{secret(32)}}
 ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=postgres
 ENV TZ=UTC
 ENV PGTZ=UTC
