@@ -39,6 +39,11 @@
     "description": "ClickHouse password. Must match the companion ClickHouse service's CLICKHOUSE_PASSWORD.",
     "isOptional": false
   },
+  "CLICKHOUSE_CLUSTER_ENABLED": {
+    "value": "false",
+    "description": "Disable ClickHouse clustered/ReplicatedMergeTree migrations. Required for single-node ClickHouse on Railway; tables use non-replicated MergeTree.",
+    "isOptional": false
+  },
   "REDIS_HOST": {
     "value": "${{redis.RAILWAY_PRIVATE_DOMAIN}}",
     "description": "Redis hostname. Auto-wired to the companion Redis service via Railway private networking.",

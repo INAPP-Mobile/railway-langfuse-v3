@@ -1,12 +1,10 @@
-FROM docker.langfuse.com/langfuse/langfuse:4
+FROM langfuse/langfuse-worker:3
 
-# Langfuse worker service - port 3030
-# Use the main langfuse image which has both web and worker code
-# Override CMD to run the worker process
-HEALTHCHECK NONE
+# Dedicated Langfuse worker image - has its own entrypoint that runs
+# node /app/worker/index.js; no CMD override needed.
+# Worker is internal-only (no public domain); Railway does not healthcheck it.
+ARG CACHE_BUST=4
 
-EXPOSE 3030
 ENV PORT=3030
 
-# Run the worker process from the main image
-CMD ["node", "packages/worker/dist/index.js"]
+EXPOSE 3030
