@@ -1,8 +1,9 @@
-FROM docker.io/minio/minio:RELEASE.2025-07-17T12-07-51Z
+FROM bitnami/minio:latest
 
 # Create the langfuse bucket before starting
-ENTRYPOINT ["sh"]
-CMD ["-c", "mkdir -p /data/langfuse && minio server --address :9000 --console-address :9001 /data --no-compat"]
+USER root
+RUN mkdir -p /data/langfuse && chown -R 1001:1001 /data
+USER 1001
 
 HEALTHCHECK --interval=1s --timeout=5s --retries=5 --start-period=1s \
   CMD mc ready local || exit 1
