@@ -6,12 +6,12 @@ USER root
 COPY keeper.xml /etc/clickhouse-server/config.d/keeper.xml
 RUN chown clickhouse:clickhouse /etc/clickhouse-server/config.d/keeper.xml
 
-# Create coordination directories and ensure ownership at build time
+# Create coordination directories at build time
 RUN mkdir -p /var/lib/clickhouse/coordination/log /var/lib/clickhouse/coordination/snapshots \
     && chown -R clickhouse:clickhouse /var/lib/clickhouse \
     && chown -R clickhouse:clickhouse /var/log/clickhouse-server
 
-# Fix volume ownership at runtime then delegate to official entrypoint
+# Custom entrypoint that fixes volume ownership then delegates
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
@@ -20,6 +20,5 @@ HEALTHCHECK --interval=10s --timeout=10s --retries=30 --start-period=120s \
 
 EXPOSE 8123 9000 9181
 
-USER clickhouse
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["clickhouse-server", "--config-file=/etc/clickhouse-server/config.xml"]
