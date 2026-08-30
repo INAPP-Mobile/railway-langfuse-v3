@@ -11,7 +11,7 @@
 # All secrets are auto-generated on first deploy.
 # Only langfuse-web (port 3000) is exposed publicly.
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/deploy/langfuse)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/deploy/JvyW_g)
 
 ## Services
 
