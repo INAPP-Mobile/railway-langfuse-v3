@@ -1,4 +1,8 @@
 {
+  "CLICKHOUSE_DB": {
+    "value": "default",
+    "description": "Default ClickHouse database. Langfuse uses this for analytics data. Referenced as ${{clickhouse.CLICKHOUSE_DB}}."
+  },
   "CLICKHOUSE_USER": {
     "value": "clickhouse",
     "description": "ClickHouse username. Referenced by Langfuse as ${{clickhouse.CLICKHOUSE_USER}}."
@@ -7,16 +11,8 @@
     "value": "${{secret(32)}}",
     "description": "ClickHouse password. Auto-generated at deploy time. Referenced by Langfuse as ${{clickhouse.CLICKHOUSE_PASSWORD}}."
   },
-  "CLICKHOUSE_DB": {
-    "value": "default",
-    "description": "Default ClickHouse database. Langfuse uses this for analytics data."
-  },
-  "CLICKHOUSE_PORT": {
-    "value": "9000",
-    "description": "ClickHouse native protocol port. Langfuse migration URL uses this port via private networking."
-  },
-  "CLICKHOUSE_HTTP_PORT": {
-    "value": "8123",
-    "description": "ClickHouse HTTP port. Langfuse CLICKHOUSE_URL references this port via private networking."
+  "CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT": {
+    "value": "1",
+    "description": "Allow the default user to manage access control so Langfuse can create its tables."
   }
 }

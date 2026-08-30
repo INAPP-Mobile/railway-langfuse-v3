@@ -3,30 +3,36 @@
     "name": "POSTGRES_USER",
     "defaultValue": "postgres",
     "description": "PostgreSQL superuser username. Referenced by langfuse-web and langfuse-worker as ${{postgres.POSTGRES_USER}}.",
-    "isOptional": false
+    "isOptional": true
   },
   "POSTGRES_PASSWORD": {
     "name": "POSTGRES_PASSWORD",
     "defaultValue": "${{secret(32)}}",
-    "description": "PostgreSQL superuser password. Auto-generated at deploy time. Referenced by Langfuse via ${{postgres.POSTGRES_PASSWORD}}.",
-    "isOptional": false
+    "description": "PostgreSQL superuser password. Auto-generated at deploy time. Referenced in DATABASE_URL as ${{POSTGRES_PASSWORD}}.",
+    "isOptional": true
   },
   "POSTGRES_DB": {
     "name": "POSTGRES_DB",
-    "defaultValue": "postgres",
+    "defaultValue": "langfuse",
     "description": "Default database name. Langfuse uses this database for all its data.",
-    "isOptional": false
+    "isOptional": true
   },
   "POSTGRES_PORT": {
     "name": "POSTGRES_PORT",
     "defaultValue": "5432",
-    "description": "Port PostgreSQL listens on inside the container. Must stay 5432 — Langfuse references this port via private networking.",
-    "isOptional": false
+    "description": "Port PostgreSQL listens on inside the container. Must stay 5432.",
+    "isOptional": true
+  },
+  "PGDATA": {
+    "name": "PGDATA",
+    "defaultValue": "/var/lib/postgresql/data/pgdata",
+    "description": "Data directory inside the volume. Points below the mount root to avoid the lost+found conflict.",
+    "isOptional": true
   },
   "DATABASE_URL": {
     "name": "DATABASE_URL",
     "defaultValue": "postgresql://${{POSTGRES_USER}}:${{POSTGRES_PASSWORD}}@${{RAILWAY_PRIVATE_DOMAIN}}:${{POSTGRES_PORT}}/${{POSTGRES_DB}}",
     "description": "Self-referencing connection string. Consumed by the postgres service itself and referenced by Langfuse as ${{postgres.DATABASE_URL}}.",
-    "isOptional": false
+    "isOptional": true
   }
 }
