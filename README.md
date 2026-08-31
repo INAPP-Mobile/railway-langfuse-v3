@@ -1,6 +1,6 @@
 # Deploy and Host Langfuse
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/deploy/pudIOo)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/deploy/langfuse-v3)
 
 Langfuse is an open-source LLM observability platform — the self-hosted alternative to LangSmith. It gives you tracing, metrics, evals, and prompt management for your LLM applications in one place.
 
@@ -34,6 +34,19 @@ This template deploys the production Langfuse v3 stack on Railway as a 6-service
 ## Dependencies
 
 This template provisions its own Postgres, ClickHouse, Redis, and MinIO — no external services required.
+
+## Dependencies for
+
+This template provisions all of its backing services itself — deployed together as a single project.
+
+### Deployment Dependencies
+
+- **Postgres** — provisioned in-project (persistent volume at `/var/lib/postgresql/data`)
+- **ClickHouse** — provisioned in-project (persistent volume at `/var/lib/clickhouse`)
+- **Redis** — provisioned in-project (persistent volume at `/data`)
+- **MinIO** — provisioned in-project (persistent volume at `/data`)
+
+No external databases, queues, or storage are required.
 
 ## Configuration
 
