@@ -1,21 +1,28 @@
 # MinIO's Docker Hub repository was deleted in 2026 (upstream archived the
-# project and removed all published images), so minio/minio no longer pulls.
+# project and removed all published images), so minio/minio no longer pulls and
+# dl.min.io returns 410 Gone.
+#
 # RustFS is a drop-in S3-compatible replacement: same S3 API, same path-style
 # addressing, and it serves the same /minio/health/live endpoint, so the
 # template's healthcheckPath and FORCE_PATH_STYLE wiring are unchanged.
+#
+# Deliberately NO custom entrypoint, CMD override, or USER change. An earlier
+# revision shipped a wrapper script to map MINIO_ROOT_USER/PASSWORD onto
+# RUSTFS_ACCESS_KEY/SECRET_KEY; it built fine but every deployment failed at
+# runtime with no deploy logs, while this bare upstream image deployed
+# successfully on the same service. The wrapper was also unnecessary — rustfs
+# natively accepts MINIO_ROOT_USER and MINIO_ROOT_PASSWORD as credential
+# sources (its own startup warning names them), and those are exactly the
+# variables the template already supplies and that Langfuse references through
+# ${{minio.MINIO_ROOT_*}}. Credentials therefore pass straight through from the
+# service environment with no translation layer.
 FROM rustfs/rustfs:latest
 
-# The base image ends with `USER rustfs` (uid 10001), so COPY lands files owned
-# by root and the chmod below fails with "Operation not permitted" — which
-# fails the whole build. Switch to root for the file operations; the entrypoint
-# drops back to uid 10001 before exec'ing the server.
-USER root
-
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
-
+# Upstream defaults already match the Railway topology (API :9000 = the exposed
+# port, console :9001, data in /data = the volume mount). Pinned explicitly so a
+# future upstream release cannot silently move the port out from under the
+# service's domain mapping and healthcheckPath.
 ENV RUSTFS_VOLUMES=/data \
-    RUSTFS_OBS_LOG_DIRECTORY=/logs \
     RUSTFS_ADDRESS=0.0.0.0:9000 \
     RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001 \
     RUSTFS_CONSOLE_ENABLE=true
@@ -25,14 +32,3 @@ HEALTHCHECK --interval=10s --timeout=3s --retries=5 --start-period=15s \
 
 EXPOSE 9000
 EXPOSE 9001
-
-# The upstream image sets ENTRYPOINT ["/entrypoint.sh"] with CMD ["rustfs"], so
-# a CMD of our own would be handed to that entrypoint as arguments and the
-# server would try to treat the script path as a volume. Override the
-# ENTRYPOINT instead.
-#
-# Run as root (not the image's default `rustfs` user): Railway mounts volumes
-# root-owned, and a non-root process cannot write the S3 metadata there. The
-# entrypoint drops to uid 10001 only after fixing ownership of /data.
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/data"]
