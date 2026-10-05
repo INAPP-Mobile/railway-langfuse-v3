@@ -1,0 +1,49 @@
+# This Dockerfile is intentionally duplicated from services/minio/Dockerfile.
+#
+# The PUBLISHED template langfuse-v3 has its minio service source pinned to
+# repo INAPP-Mobile/railway-langfuse-v3 with rootDirectory "minio". Railway
+# resolves rootDirectory relative to the repository root, so a fresh install
+# looks for <repo>/minio/Dockerfile — not <repo>/services/minio/Dockerfile.
+# Keeping an identical copy here means the published template builds correctly
+# without needing to edit the template's source path by hand in the dashboard.
+#
+# Keep the two files byte-identical apart from this comment block.
+#
+# ---- begin mirrored content -------------------------------------------------
+# MinIO's Docker Hub repository was deleted in 2026 — the upstream project was
+# archived and all published images removed. minio/minio:RELEASE.2025-09-07T16-13-09Z
+# now returns 404 from the Hub API, and dl.min.io answers 410 Gone, so this service
+# cannot be built from MinIO at all.
+#
+# RustFS is a drop-in S3-compatible replacement: same S3 API, same path-style
+# addressing, and it serves the same /minio/health/live endpoint. That means the
+# healthcheck below, the FORCE_PATH_STYLE wiring, and every ${{minio.MINIO_ROOT_*}}
+# companion reference stay valid unchanged.
+#
+# Deliberately NO custom entrypoint or CMD override. An earlier revision shipped a
+# wrapper script to map MINIO_ROOT_USER/PASSWORD onto RUSTFS_ACCESS_KEY/SECRET_KEY;
+# it built fine but every deployment failed at runtime with no deploy logs, while
+# this bare upstream image deploys and logs normally. The mapping is also
+# unnecessary — rustfs natively reads MINIO_ROOT_USER and MINIO_ROOT_PASSWORD as
+# credential sources, so the template's existing variables pass straight through.
+FROM rustfs/rustfs:latest
+
+# Run as root, overriding the image's default `rustfs` user. Railway mounts volumes
+# root-owned, and as uid 10001 rustfs cannot write its metadata directory: it dies at
+# startup with "Permission denied (os error 13)". This USER change is the only
+# customization the image needs.
+USER root
+
+ENV RUSTFS_VOLUMES=/data \
+    RUSTFS_ADDRESS=0.0.0.0:9000 \
+    RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001 \
+    RUSTFS_CONSOLE_ENABLE=true
+
+# No Dockerfile VOLUME directive — Railway rejects it; the volume is attached via
+# railway.json at /data, which matches RUSTFS_VOLUMES above.
+HEALTHCHECK --interval=10s --timeout=3s --retries=5 --start-period=15s \
+  CMD curl -f http://127.0.0.1:9000/minio/health/live || exit 1
+
+EXPOSE 9000
+EXPOSE 9001
+# ---- end mirrored content ---------------------------------------------------
