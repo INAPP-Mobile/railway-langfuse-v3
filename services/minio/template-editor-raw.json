@@ -1,10 +1,10 @@
 {
   "MINIO_ROOT_USER": {
     "value": "minio",
-    "description": "MinIO root username. Referenced by Langfuse as ${{minio.MINIO_ROOT_USER}}."
+    "description": "RustFS (S3-compatible object storage, MinIO-compatible) root username. Referenced by Langfuse as ${{minio.MINIO_ROOT_USER}}."
   },
   "MINIO_ROOT_PASSWORD": {
     "value": "${{secret(32)}}",
-    "description": "MinIO root password. Auto-generated at deploy time. Referenced by Langfuse as ${{minio.MINIO_ROOT_PASSWORD}}."
+    "description": "RustFS (S3-compatible object storage, MinIO-compatible) root password. Auto-generated at deploy time. Referenced by Langfuse as ${{minio.MINIO_ROOT_PASSWORD}}."
   }
 }

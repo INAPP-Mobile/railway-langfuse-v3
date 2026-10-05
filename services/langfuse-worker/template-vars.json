@@ -86,13 +86,13 @@
   "LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID": {
     "name": "LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID",
     "defaultValue": "${{minio.MINIO_ROOT_USER}}",
-    "description": "MinIO access key for event uploads \u2014 companion-referenced.",
+    "description": "S3 access key (RustFS, MinIO-compatible) for event uploads \u2014 companion-referenced.",
     "isOptional": true
   },
   "LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY": {
     "name": "LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY",
     "defaultValue": "${{minio.MINIO_ROOT_PASSWORD}}",
-    "description": "MinIO secret key for event uploads \u2014 companion-referenced.",
+    "description": "S3 secret key (RustFS, MinIO-compatible) for event uploads \u2014 companion-referenced.",
     "isOptional": true
   },
   "LANGFUSE_S3_EVENT_UPLOAD_BUCKET": {
@@ -104,7 +104,7 @@
   "LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT": {
     "name": "LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT",
     "defaultValue": "http://${{minio.RAILWAY_PRIVATE_DOMAIN}}:9000",
-    "description": "Internal MinIO endpoint used by the server for event uploads.",
+    "description": "Internal S3 endpoint (RustFS, MinIO-compatible) used by the server for event uploads.",
     "isOptional": true
   },
   "LANGFUSE_S3_EVENT_UPLOAD_REGION": {
@@ -128,13 +128,13 @@
   "LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID": {
     "name": "LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID",
     "defaultValue": "${{minio.MINIO_ROOT_USER}}",
-    "description": "MinIO access key for media uploads \u2014 companion-referenced.",
+    "description": "S3 access key (RustFS, MinIO-compatible) for media uploads \u2014 companion-referenced.",
     "isOptional": true
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY": {
     "name": "LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY",
     "defaultValue": "${{minio.MINIO_ROOT_PASSWORD}}",
-    "description": "MinIO secret key for media uploads \u2014 companion-referenced.",
+    "description": "S3 secret key (RustFS, MinIO-compatible) for media uploads \u2014 companion-referenced.",
     "isOptional": true
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_BUCKET": {
@@ -146,7 +146,7 @@
   "LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT": {
     "name": "LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT",
     "defaultValue": "https://${{minio.RAILWAY_PUBLIC_DOMAIN}}",
-    "description": "PUBLIC MinIO endpoint used by browsers for presigned media uploads.",
+    "description": "PUBLIC S3 endpoint (RustFS, MinIO-compatible) used by browsers for presigned media uploads.",
     "isOptional": true
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_REGION": {
@@ -182,13 +182,13 @@
   "LANGFUSE_S3_BATCH_EXPORT_ENDPOINT": {
     "name": "LANGFUSE_S3_BATCH_EXPORT_ENDPOINT",
     "defaultValue": "http://${{minio.RAILWAY_PRIVATE_DOMAIN}}:9000",
-    "description": "Internal MinIO endpoint for batch exports.",
+    "description": "Internal S3 endpoint (RustFS, MinIO-compatible) for batch exports.",
     "isOptional": true
   },
   "LANGFUSE_S3_BATCH_EXPORT_EXTERNAL_ENDPOINT": {
     "name": "LANGFUSE_S3_BATCH_EXPORT_EXTERNAL_ENDPOINT",
     "defaultValue": "https://${{minio.RAILWAY_PUBLIC_DOMAIN}}",
-    "description": "Public MinIO endpoint browsers use to download export files.",
+    "description": "Public S3 endpoint (RustFS, MinIO-compatible) browsers use to download export files.",
     "isOptional": true
   },
   "LANGFUSE_S3_BATCH_EXPORT_REGION": {
@@ -206,13 +206,13 @@
   "LANGFUSE_S3_BATCH_EXPORT_ACCESS_KEY_ID": {
     "name": "LANGFUSE_S3_BATCH_EXPORT_ACCESS_KEY_ID",
     "defaultValue": "${{minio.MINIO_ROOT_USER}}",
-    "description": "MinIO access key for batch exports \u2014 companion-referenced.",
+    "description": "S3 access key (RustFS, MinIO-compatible) for batch exports \u2014 companion-referenced.",
     "isOptional": true
   },
   "LANGFUSE_S3_BATCH_EXPORT_SECRET_ACCESS_KEY": {
     "name": "LANGFUSE_S3_BATCH_EXPORT_SECRET_ACCESS_KEY",
     "defaultValue": "${{minio.MINIO_ROOT_PASSWORD}}",
-    "description": "MinIO secret key for batch exports \u2014 companion-referenced.",
+    "description": "S3 secret key (RustFS, MinIO-compatible) for batch exports \u2014 companion-referenced.",
     "isOptional": true
   },
   "TELEMETRY_ENABLED": {

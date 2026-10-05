@@ -57,11 +57,11 @@
   },
   "LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID": {
     "value": "${{minio.MINIO_ROOT_USER}}",
-    "description": "MinIO access key for event uploads \u2014 companion-referenced."
+    "description": "S3 access key (RustFS, MinIO-compatible) for event uploads \u2014 companion-referenced."
   },
   "LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY": {
     "value": "${{minio.MINIO_ROOT_PASSWORD}}",
-    "description": "MinIO secret key for event uploads \u2014 companion-referenced."
+    "description": "S3 secret key (RustFS, MinIO-compatible) for event uploads \u2014 companion-referenced."
   },
   "LANGFUSE_S3_EVENT_UPLOAD_BUCKET": {
     "value": "langfuse",
@@ -69,7 +69,7 @@
   },
   "LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT": {
     "value": "http://${{minio.RAILWAY_PRIVATE_DOMAIN}}:9000",
-    "description": "Internal MinIO endpoint used by the server for event uploads."
+    "description": "Internal S3 endpoint (RustFS, MinIO-compatible) used by the server for event uploads."
   },
   "LANGFUSE_S3_EVENT_UPLOAD_REGION": {
     "value": "auto",
@@ -85,11 +85,11 @@
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID": {
     "value": "${{minio.MINIO_ROOT_USER}}",
-    "description": "MinIO access key for media uploads \u2014 companion-referenced."
+    "description": "S3 access key (RustFS, MinIO-compatible) for media uploads \u2014 companion-referenced."
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY": {
     "value": "${{minio.MINIO_ROOT_PASSWORD}}",
-    "description": "MinIO secret key for media uploads \u2014 companion-referenced."
+    "description": "S3 secret key (RustFS, MinIO-compatible) for media uploads \u2014 companion-referenced."
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_BUCKET": {
     "value": "langfuse",
@@ -97,7 +97,7 @@
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT": {
     "value": "https://${{minio.RAILWAY_PUBLIC_DOMAIN}}",
-    "description": "PUBLIC MinIO endpoint used by browsers for presigned media uploads."
+    "description": "PUBLIC S3 endpoint (RustFS, MinIO-compatible) used by browsers for presigned media uploads."
   },
   "LANGFUSE_S3_MEDIA_UPLOAD_REGION": {
     "value": "auto",
@@ -121,11 +121,11 @@
   },
   "LANGFUSE_S3_BATCH_EXPORT_ENDPOINT": {
     "value": "http://${{minio.RAILWAY_PRIVATE_DOMAIN}}:9000",
-    "description": "Internal MinIO endpoint for batch exports."
+    "description": "Internal S3 endpoint (RustFS, MinIO-compatible) for batch exports."
   },
   "LANGFUSE_S3_BATCH_EXPORT_EXTERNAL_ENDPOINT": {
     "value": "https://${{minio.RAILWAY_PUBLIC_DOMAIN}}",
-    "description": "Public MinIO endpoint browsers use to download export files."
+    "description": "Public S3 endpoint (RustFS, MinIO-compatible) browsers use to download export files."
   },
   "LANGFUSE_S3_BATCH_EXPORT_REGION": {
     "value": "auto",
@@ -137,11 +137,11 @@
   },
   "LANGFUSE_S3_BATCH_EXPORT_ACCESS_KEY_ID": {
     "value": "${{minio.MINIO_ROOT_USER}}",
-    "description": "MinIO access key for batch exports \u2014 companion-referenced."
+    "description": "S3 access key (RustFS, MinIO-compatible) for batch exports \u2014 companion-referenced."
   },
   "LANGFUSE_S3_BATCH_EXPORT_SECRET_ACCESS_KEY": {
     "value": "${{minio.MINIO_ROOT_PASSWORD}}",
-    "description": "MinIO secret key for batch exports \u2014 companion-referenced."
+    "description": "S3 secret key (RustFS, MinIO-compatible) for batch exports \u2014 companion-referenced."
   },
   "TELEMETRY_ENABLED": {
     "value": "false",
