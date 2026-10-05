@@ -1,4 +1,4 @@
-FROM docker.io/redis:7-alpine
+FROM docker.io/redis:8-alpine
 
 # Require password and disable eviction for BullMQ.
 # NOTE: exec-form CMD does NOT expand ${VAR} — must use shell form so
