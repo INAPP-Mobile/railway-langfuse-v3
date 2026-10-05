@@ -1,4 +1,8 @@
 {
+  "PORT": {
+    "value": "9000",
+    "description": "Port the public domain proxies to. RustFS binds RUSTFS_ADDRESS (0.0.0.0:9000) and ignores $PORT, so Railway's domain must be told explicitly which container port to route to."
+  },
   "MINIO_ROOT_USER": {
     "value": "minio",
     "description": "RustFS (S3-compatible object storage, MinIO-compatible) root username. Referenced by Langfuse as ${{minio.MINIO_ROOT_USER}}."

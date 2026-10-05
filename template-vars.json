@@ -84,6 +84,12 @@
     }
   },
   "minio": {
+    "PORT": {
+      "name": "PORT",
+      "defaultValue": "9000",
+      "description": "Port the public domain proxies to. RustFS binds RUSTFS_ADDRESS (0.0.0.0:9000) and ignores $PORT, so Railway's domain must be told explicitly which container port to route to. Must stay 9000.",
+      "isOptional": true
+    },
     "MINIO_ROOT_USER": {
       "name": "MINIO_ROOT_USER",
       "defaultValue": "minio",
