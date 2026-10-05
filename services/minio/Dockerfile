@@ -1,17 +1,18 @@
 # MinIO's Docker Hub repository was deleted in 2026 (upstream archived the
 # project and removed all published images), so minio/minio no longer pulls.
 # RustFS is a drop-in S3-compatible replacement: same S3 API, same path-style
-# addressing, and it serves the same /minio/health/live endpoint.
+# addressing, and it serves the same /minio/health/live endpoint, so the
+# template's healthcheckPath and FORCE_PATH_STYLE wiring are unchanged.
 FROM rustfs/rustfs:latest
 
-# The base image runs as non-root `rustfs`, but Railway mounts volumes
-# root-owned. Without this chown the service cannot write to /data and
-# crash-loops with EACCES on startup.
+# The base image ends with `USER rustfs` (uid 10001), so COPY lands files owned
+# by root and the chmod below fails with "Operation not permitted" — which
+# fails the whole build. Switch to root for the file operations; the entrypoint
+# drops back to uid 10001 before exec'ing the server.
 USER root
-RUN mkdir -p /data /logs && chown -R rustfs:rustfs /data /logs
+
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
-USER rustfs
 
 ENV RUSTFS_VOLUMES=/data \
     RUSTFS_OBS_LOG_DIRECTORY=/logs \
@@ -26,8 +27,12 @@ EXPOSE 9000
 EXPOSE 9001
 
 # The upstream image sets ENTRYPOINT ["/entrypoint.sh"] with CMD ["rustfs"], so
-# a CMD of our own would be passed to the entrypoint as arguments and the server
-# would try to treat "/docker-entrypoint.sh" as a volume path. Override the
-# ENTRYPOINT instead and keep the arg explicit.
+# a CMD of our own would be handed to that entrypoint as arguments and the
+# server would try to treat the script path as a volume. Override the
+# ENTRYPOINT instead.
+#
+# Run as root (not the image's default `rustfs` user): Railway mounts volumes
+# root-owned, and a non-root process cannot write the S3 metadata there. The
+# entrypoint drops to uid 10001 only after fixing ownership of /data.
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["/data"]
