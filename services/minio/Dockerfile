@@ -18,6 +18,17 @@
 # service environment with no translation layer.
 FROM rustfs/rustfs:latest
 
+# Run as root, overriding the image's default `rustfs` user. Railway mounts
+# volumes root-owned, and as uid 10001 rustfs cannot write its metadata there:
+# it dies at startup with "[FATAL] Server runtime failed: Io error: Permission
+# denied (os error 13)". This is the one customisation the image needs.
+#
+# Note this is a USER change ONLY. An earlier revision also overrode ENTRYPOINT
+# with a wrapper script; that built fine but every deployment failed at runtime
+# with no deploy logs, while this image's own entrypoint deploys and logs
+# normally. Upstream's /entrypoint.sh is correct, so leave it alone.
+USER root
+
 # Upstream defaults already match the Railway topology (API :9000 = the exposed
 # port, console :9001, data in /data = the volume mount). Pinned explicitly so a
 # future upstream release cannot silently move the port out from under the
