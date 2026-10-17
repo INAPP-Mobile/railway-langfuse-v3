@@ -1,4 +1,4 @@
-FROM langfuse/langfuse:3
+FROM langfuse/langfuse:4
 
 # Langfuse web service - port 3000.
 # Wrap the base image's entrypoint with an ENCRYPTION_KEY compatibility
