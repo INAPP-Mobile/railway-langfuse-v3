@@ -1,4 +1,4 @@
-FROM langfuse/langfuse-worker:3
+FROM langfuse/langfuse-worker:3.227.1
 
 # Dedicated Langfuse worker image - base entrypoint wrapped with the
 # ENCRYPTION_KEY compatibility shim (see web Dockerfile). Worker is

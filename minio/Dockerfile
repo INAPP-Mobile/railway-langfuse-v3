@@ -26,7 +26,7 @@
 # this bare upstream image deploys and logs normally. The mapping is also
 # unnecessary — rustfs natively reads MINIO_ROOT_USER and MINIO_ROOT_PASSWORD as
 # credential sources, so the template's existing variables pass straight through.
-FROM rustfs/rustfs:latest
+FROM rustfs/rustfs:1.0.6
 
 # Run as root, overriding the image's default `rustfs` user. Railway mounts volumes
 # root-owned, and as uid 10001 rustfs cannot write its metadata directory: it dies at
