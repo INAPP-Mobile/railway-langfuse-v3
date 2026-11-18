@@ -1,4 +1,4 @@
-FROM docker.io/pgvector/pgvector:pg17
+FROM docker.io/pgvector/pgvector:0.8.7-pg17
 
 # POSTGRES_PASSWORD is injected by Railway at runtime via ${{secret(32)}}
 ENV POSTGRES_USER=postgres
